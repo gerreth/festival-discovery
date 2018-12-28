@@ -2,6 +2,7 @@
  * MarkerMini
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const MarkerMiniWrapper = styled.div`
@@ -16,9 +17,11 @@ const MarkerMiniWrapper = styled.div`
   width: 16px;
 `;
 
-export default class MarkerMini extends React.Component {
-  render() {
-    const { lat, lng } = this.props;
-    return <MarkerMiniWrapper lat={lat} lng={lng} />;
-  }
-}
+const MarkerMini = ({ lat, lng }) => <MarkerMiniWrapper lat={lat} lng={lng} />;
+
+MarkerMini.propTypes = {
+  lat: PropTypes.number,
+  lng: PropTypes.number,
+};
+
+export default MarkerMini;

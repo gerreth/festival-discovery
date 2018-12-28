@@ -1,5 +1,5 @@
 FROM node:10
 
-WORKDIR /usr/src/backend
+WORKDIR /usr/src/songkick
 
 CMD [ "npm", "run", "dev" ]

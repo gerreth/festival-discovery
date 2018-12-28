@@ -1,4 +1,5 @@
 const features = {
+  landscape: [{ elementType: 'geometry', color: '#fafafa' }],
   poi: [
     { elementType: 'geometry', color: '#fafafa' },
     { elementType: 'labels.text.fill', color: '#757575' },
@@ -8,12 +9,29 @@ const features = {
     { elementType: 'geometry.fill', color: '#81c99a' },
     { elementType: 'labels.text.fill', color: '#9e9e9e' },
   ],
-  'road.highway': [
-    { elementType: undefined, color: '#ff0000' },
+  road: [
     { elementType: 'geometry', color: '#dadada' },
-    { elementType: 'geometry.fill', color: '#fffffd' },
+    { elementType: 'geometry.fill', color: '#ffffff' },
     { elementType: 'labels.text.fill', color: '#000000' },
     { elementType: 'labels.text.stroke', color: '#ffffff' },
+  ],
+  'road.local': [
+    // { elementType: 'geometry', color: '#dadada' },
+    // { elementType: 'geometry.fill', color: '#ffffff' },
+    // { elementType: 'labels.text.fill', color: '#000000' },
+    // { elementType: 'labels.text.stroke', color: '#ffffff' },
+  ],
+  'road.arterial': [
+    // { elementType: 'geometry', color: '#dadada' },
+    // { elementType: 'geometry.fill', color: '#ffffff' },
+    // { elementType: 'labels.text.fill', color: '#000000' },
+    // { elementType: 'labels.text.stroke', color: '#ffffff' },
+  ],
+  'road.highway': [
+    // { elementType: 'geometry', color: '#dadada' },
+    // { elementType: 'geometry.fill', color: '#ffffff' },
+    // { elementType: 'labels.text.fill', color: '#000000' },
+    // { elementType: 'labels.text.stroke', color: '#ffffff' },
   ],
   water: [
     { elementType: 'geometry', color: '#75aec9' },
@@ -21,13 +39,13 @@ const features = {
   ],
 };
 
-const mapped = Object.keys(features).reduce((carry, feature) => {
-  return [
+const mapped = Object.keys(features).reduce(
+  (carry, feature) => [
     ...carry,
     ...features[feature].map(type => {
-      const elementType = type.elementType;
+      const { elementType } = type;
       const featureType = feature;
-      let stylers = [];
+      const stylers = [];
 
       if (type.color) stylers.push({ color: type.color });
       if (type.visibility) stylers.push({ visibility: type.visibility });
@@ -44,8 +62,9 @@ const mapped = Object.keys(features).reduce((carry, feature) => {
         stylers,
       };
     }),
-  ];
-}, []);
+  ],
+  [],
+);
 
 export const styles = [
   {
@@ -105,41 +124,7 @@ export const styles = [
       },
     ],
   },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#ffffff',
-      },
-    ],
-  },
-  {
-    featureType: 'road.arterial',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#9e9e9e',
-      },
-    ],
-  },
+
   {
     featureType: 'transit.line',
     elementType: 'geometry',

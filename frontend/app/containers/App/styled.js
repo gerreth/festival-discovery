@@ -20,6 +20,7 @@ export const Content = styled(Container)`
 `;
 
 export const StyledContainer = styled.div`
+  flex: 1;
   padding: 8px;
 `;
 

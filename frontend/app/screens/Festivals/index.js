@@ -2,13 +2,11 @@
  * Festivals
  */
 import React from 'react';
-
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { StyledContainer } from 'containers/App/styled';
 import Festival from './Festival';
-import Map from './Map';
 
 export function sortByDate(a, b) {
   if (a.date.start.date < b.date.start.date) return -1;
@@ -23,28 +21,24 @@ class Festivals extends React.PureComponent {
 
     festivals = festivals.sort(sortByDate);
 
-    return festivals.map(festival => {
-      return (
-        <Festival
-          key={`${festival.name}-${festival.location.city}-${
-            festival.date.start.date
-          }`}
-          festival={festival}
-          similar={this.props.similar}
-          top={this.props.top}
-        />
-      );
-    });
+    return festivals.map(festival => (
+      <Festival
+        key={`${festival.name}-${festival.location.city}-${
+          festival.date.start.date
+        }`}
+        festival={festival}
+        similar={this.props.similar}
+        top={this.props.top}
+      />
+    ));
   };
 
   render() {
     return (
-      <>
-        <StyledContainer>
-          <Map festivals={this.props.festivals} />
-        </StyledContainer>
-        <StyledContainer>{this.renderFestivals()}</StyledContainer>
-      </>
+      <StyledContainer>
+        <h2>All Festivals</h2>
+        {this.renderFestivals()}
+      </StyledContainer>
     );
   }
 }

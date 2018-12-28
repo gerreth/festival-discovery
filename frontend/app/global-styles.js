@@ -13,14 +13,6 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     width: 100%;
     -webkit-font-smoothing: antialiased;
-    ${
-      '' /* -webkit-touch-callout: none;
-    -webkit-user-select: none;
-     -khtml-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none; */
-    }
   }
 
   body {
@@ -40,11 +32,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button:active {
-outline: none;
-border: none;
-}
+    outline: none;
+    border: none;
+  }
 
-button:focus {outline:0;}
+  button:focus {outline:0;}
 
   #app {
     background-color: #fcfcfc;
@@ -52,10 +44,19 @@ button:focus {outline:0;}
     width: 100%;
   }
 
+  p {
+    margin: 0;
+  }
+
   p,
   label {
     ${'' /* font-family: Georgia, Times, 'Times New Roman', serif; */}
     line-height: 1.5em;
+  }
+
+  h2 {
+    line-height: 32px;
+    margin: 0 0 32px;
   }
 
   .band-enter {

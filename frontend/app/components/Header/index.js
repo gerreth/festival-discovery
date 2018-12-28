@@ -17,14 +17,11 @@ const StyledLink = styled(Link)`
   padding: 8px;
 `;
 
-export default class Header extends React.Component {
-  render() {
-    return (
-      <StyledHeader>
-        <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/festivals">Festivals</StyledLink>
-        <StyledLink to="/login">Login</StyledLink>
-      </StyledHeader>
-    );
-  }
-}
+export default () => (
+  <StyledHeader>
+    <StyledLink to="/">Home</StyledLink>
+    <StyledLink to="/festivals">Festivals</StyledLink>
+    <StyledLink to="/map">Map</StyledLink>
+    <StyledLink to="/login">Login</StyledLink>
+  </StyledHeader>
+);

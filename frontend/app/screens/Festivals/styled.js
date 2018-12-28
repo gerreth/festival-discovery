@@ -70,7 +70,7 @@ export const FestivalWrapper = styled.div`
 `;
 
 export const FestivalLocation = styled.div`
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 `;
 
 export const FestivalDate = styled.div`

@@ -23,7 +23,8 @@ export function sortByHighlight(a, b) {
 /* eslint-disable react/prefer-stateless-function */
 class HomePage extends React.PureComponent {
   renderFestivals = () => {
-    let { festivals, similar, top } = this.props;
+    const { similar, top } = this.props;
+    let { festivals } = this.props;
 
     festivals = festivals.map(festival => {
       const count = festival.bands.reduce((carry, band) => {
@@ -41,22 +42,25 @@ class HomePage extends React.PureComponent {
       .slice(0, 5)
       .sort(sortByDate);
 
-    return festivals.map(festival => {
-      return (
-        <Festival
-          key={`${festival.name}-${festival.location.city}-${
-            festival.date.start.date
-          }`}
-          festival={festival}
-          similar={similar}
-          top={top}
-        />
-      );
-    });
+    return festivals.map(festival => (
+      <Festival
+        key={`${festival.name}-${festival.location.city}-${
+          festival.date.start.date
+        }`}
+        festival={festival}
+        similar={similar}
+        top={top}
+      />
+    ));
   };
 
   render() {
-    return <StyledContainer>{this.renderFestivals()}</StyledContainer>;
+    return (
+      <StyledContainer>
+        <h2>Top Festivals</h2>
+        {this.renderFestivals()}
+      </StyledContainer>
+    );
   }
 }
 

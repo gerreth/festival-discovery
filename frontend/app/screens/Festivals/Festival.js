@@ -27,6 +27,7 @@ export default class Festival extends React.PureComponent {
         </span>
       );
     }
+    return <></>;
   };
 
   renderBands = ({ bands }) => {
@@ -90,4 +91,6 @@ Festival.propTypes = {
     name: PropTypes.string,
     bands: PropTypes.arrayOf(PropTypes.string),
   }),
+  similar: PropTypes.array,
+  top: PropTypes.array,
 };
