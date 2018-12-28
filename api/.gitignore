@@ -1,0 +1,13 @@
+## Compiled JavaScript files
+.env
+pm2.txt
+pm2config.json
+
+dist
+node_modules
+
+**/*.js
+**/*.js.map
+
+# Typescript v1 declaration files
+typings/
