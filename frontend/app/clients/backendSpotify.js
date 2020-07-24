@@ -5,9 +5,12 @@ const baseUrl = 'http://localhost:1000';
 const backendClient = () => {
   const instance = axios.create();
 
-  const fetchTopBands = ({ token, userId }) => {
+  const fetchTopBands = async ({ token, userId }) => {
     const url = `${baseUrl}/bands/top/${userId}?token=${token}`;
-    return instance.get(url);
+
+    const result = await instance.get(url);
+
+    return result;
   };
 
   const fetchSimilarBands = ({ token, topBandIds, userId }) => {

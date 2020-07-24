@@ -13,8 +13,6 @@ export default function reducer(state = initialState, action) {
     case USER_FAILURE:
       return { ...state, error: action.error };
     case USER_SUCCESS:
-      console.log('action');
-      console.log(action);
       return { ...state, spotify: action.user, error: null };
     default:
       return state;

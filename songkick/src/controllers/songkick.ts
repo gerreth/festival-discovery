@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import {Request, Response} from 'express';
 
-import songkickService from "../services/songkick";
+import songkickService from '../services/songkick';
 
 const festivals = async (request: Request, response: Response) => {
   const festivals = await songkickService().getFestivals();
@@ -10,7 +10,7 @@ const festivals = async (request: Request, response: Response) => {
 
 const filteredFestivals = async (request: Request, response: Response) => {
   const {
-    body: { similar, top }
+    body: {similar, top},
   } = request;
 
   let festivals = await songkickService().getFestivals();
@@ -18,13 +18,9 @@ const filteredFestivals = async (request: Request, response: Response) => {
   festivals = festivals.filter(festival => {
     const bands = festival.bands;
 
-    const numTop = bands.filter(
-      (bandName: string) => top.indexOf(bandName) > -1
-    ).length;
+    const numTop = bands.filter((bandName: string) => top.indexOf(bandName) > -1).length;
 
-    const numSimilar = bands.filter(
-      (bandName: string) => similar.indexOf(bandName) > -1
-    ).length;
+    const numSimilar = bands.filter((bandName: string) => similar.indexOf(bandName) > -1).length;
 
     return numTop * 2 + numSimilar > 0;
   });
@@ -34,5 +30,5 @@ const filteredFestivals = async (request: Request, response: Response) => {
 
 export default {
   festivals,
-  filteredFestivals
+  filteredFestivals,
 };

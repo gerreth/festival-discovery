@@ -6,13 +6,6 @@ import backendClient from 'clients/backendSpotify';
 import spotify from 'clients/spotify';
 
 import {
-  spotifyFinish,
-  SPOTIFY_REQUEST,
-  getToken,
-  tokenSuccess,
-} from './reducer';
-
-import {
   similarBandsSuccess,
   similarBandsFailure,
   topBandsSuccess,
@@ -27,6 +20,13 @@ import {
   userSuccess,
   userFailure,
 } from 'containers/UserContainer/reducer';
+
+import {
+  spotifyFinish,
+  SPOTIFY_REQUEST,
+  getToken,
+  tokenSuccess,
+} from './reducer';
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
 export default function* watcherSaga() {
@@ -73,13 +73,10 @@ function* caller(get, args, success, failure, selector) {
   try {
     const response = yield call(get, args);
     yield put(success(response.data));
-    console.log({ response });
   } catch (error) {
-    console.log({ error });
     yield put(failure(error));
   }
 
-  console.log('TEST');
   return selector ? yield select(selector) : undefined;
 }
 

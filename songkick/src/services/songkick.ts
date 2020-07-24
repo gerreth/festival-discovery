@@ -1,39 +1,39 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { asyncAwaitMap } from "../utils/async";
-import formatDate from "../utils/formatDate";
-import { errorLogger } from "../utils/logger";
-import { merge } from "../utils/array";
-import redisService from "./redis";
+import {asyncAwaitMap} from '../utils/async';
+import formatDate from '../utils/formatDate';
+import {errorLogger} from '../utils/logger';
+import {merge} from '../utils/array';
+import redisService from './redis';
 
-const min_date = "2019-01-01";
-const max_date = "2019-12-31";
-const type = "festival";
+const min_date = '2020-01-01';
+const max_date = '2020-12-31';
+const type = 'festival';
 const api_key = process.env.SONGKICK_API_KEY;
 const baseUrl = `https://api.songkick.com/api/3.0/events.json?apikey=${api_key}&min_date=${min_date}&max_date=${max_date}&type=${type}`;
 
 const cities: any = {
-  Amsterdam: "31366",
-  Barcelona: "28714",
-  Berlin: "28443",
-  Budapest: "29047",
-  Eindhoven: "31380",
-  Hamburg: "28498",
-  Lissabon: "31802",
-  London: "24426",
-  Madrid: "28755",
-  Manchester: "24475",
-  Matlock: "24517",
-  Nantes: "28901",
-  SaintMalo: "28922",
-  Scheessel: "55800",
-  Paris: "28909"
+  Amsterdam: '31366',
+  Barcelona: '28714',
+  Berlin: '28443',
+  Budapest: '29047',
+  Eindhoven: '31380',
+  Hamburg: '28498',
+  Lissabon: '31802',
+  London: '24426',
+  Madrid: '28755',
+  Manchester: '24475',
+  Matlock: '24517',
+  Nantes: '28901',
+  SaintMalo: '28922',
+  Scheessel: '55800',
+  Paris: '28909',
 };
 
 type SongkickResponse = {
   page: number;
   perPage: number;
-  results: { event: any };
+  results: {event: any};
   totalEntries: number;
 };
 
@@ -48,8 +48,8 @@ export type SongkickService = () => {
 const songkickService = () => {
   const axiosInstance = axios.create({
     headers: {
-      "content-type": "application/json"
-    }
+      'content-type': 'application/json',
+    },
   });
 
   /**
@@ -67,8 +67,8 @@ const songkickService = () => {
 
     const {
       perPage,
-      results: { event },
-      totalEntries
+      results: {event},
+      totalEntries,
     } = resultsPage;
 
     const numPages = Math.ceil(totalEntries / perPage);
@@ -77,7 +77,7 @@ const songkickService = () => {
 
     while (page < numPages) {
       const {
-        results: { event }
+        results: {event},
       } = await getCacheOrApi(city, page + 1);
 
       events.push(event);
@@ -103,12 +103,13 @@ const songkickService = () => {
     try {
       redis = redisService(url);
     } catch (error) {
-      errorLogger("Redis error (get)");
+      errorLogger('Redis error (get)');
     }
 
-    let cache = await redis.get();
+    // let cache = await redis.get();
+    // console.log({cache});
 
-    if (cache) return cache;
+    // if (cache) return cache;
 
     return await makeRequest(url);
   };
@@ -122,19 +123,19 @@ const songkickService = () => {
     try {
       resultsPage = (await axiosInstance.get(url)).data.resultsPage;
     } catch (error) {
-      errorLogger("Error with response");
+      errorLogger('Error with response');
       return {
         page: 1,
         perPage: 50,
-        results: { event: [] },
-        totalEntries: 0
+        results: {event: []},
+        totalEntries: 0,
       };
     }
 
     try {
       redisService(url).setExpire(resultsPage, 24 * 60 * 60);
     } catch (error) {
-      errorLogger("Redis error (set)");
+      errorLogger('Redis error (set)');
     }
 
     return resultsPage;
@@ -148,21 +149,23 @@ const songkickService = () => {
 
       const merged = merge(raw);
 
-      const reduced = merged.map(festival => {
-        return {
-          date: {
-            formatted: formatDate(festival.start.date, festival.end.date),
-            end: festival.end,
-            start: festival.start
-          },
-          location: {
-            ...festival.location,
-            venue: festival.venue.displayName
-          },
-          name: festival.displayName,
-          bands: festival.performance.map((band: any) => band.displayName)
-        };
-      });
+      const reduced = merged
+        .filter(_ => _ !== undefined)
+        .map(festival => {
+          return {
+            date: {
+              formatted: formatDate(festival.start.date, festival.end.date),
+              end: festival.end,
+              start: festival.start,
+            },
+            location: {
+              ...festival.location,
+              venue: festival.venue.displayName,
+            },
+            name: festival.displayName,
+            bands: festival.performance.map((band: any) => band.displayName),
+          };
+        });
 
       // const foo = reduced.reduce((carry: any, item: any) => {
       //   const foundName = carry.findIndex((_: any) => _.name === item.name);
@@ -181,7 +184,7 @@ const songkickService = () => {
       // }, []);
 
       return reduced;
-    }
+    },
   };
 };
 
